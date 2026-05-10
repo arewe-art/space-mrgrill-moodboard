@@ -1,0 +1,17 @@
+# внутрішні робочі нотатки (не для публіки)
+notes/
+index.md
+
+# system / secrets
+.env
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# editor / build
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+node_modules/

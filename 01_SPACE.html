@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr.Grill — Space · Пост-продакшн</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #E8102E;
+    --gold-light: #FF3047;
+    --gold-soft: rgba(232,16,46,0.12);
+    --gold-border: rgba(232,16,46,0.32);
+    --bg: #0A0A0A;
+    --bg-card: #141414;
+    --bg-card-hover: #1A1A1A;
+    --text: #F5F5F5;
+    --text-muted: #888888;
+    --text-dim: #555555;
+    --border: #2A2A2A;
+    --tag-keep: #7EE0A8;     --tag-keep-bg: rgba(126,224,168,0.10);
+    --tag-fix:  #FF9B9B;     --tag-fix-bg:  rgba(255,155,155,0.10);
+    --tag-add:  #4DA6FF;     --tag-add-bg:  rgba(77,166,255,0.10);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Inter',-apple-system,sans-serif;
+    background:var(--bg); color:var(--text);
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1000px 500px at 85% -10%, rgba(232,16,46,0.07) 0%, transparent 55%),
+      radial-gradient(800px 400px at -10% 30%, rgba(255,255,255,0.02) 0%, transparent 55%);
+    background-attachment:fixed;
+  }
+
+  /* HERO */
+  .hero { background:#0A0A0A; padding:56px 0 52px; position:relative; overflow:hidden;
+    border-bottom:1px solid var(--border);
+  }
+  .hero::before { content:''; position:absolute; inset:0;
+    background:radial-gradient(900px 400px at 85% 50%, rgba(232,16,46,0.18) 0%, transparent 65%);
+  }
+  .hero::after { content:'MR.GRILL'; position:absolute; right:-40px; top:50%;
+    transform:translateY(-50%); font-family:'Space Grotesk',sans-serif;
+    font-size:220px; font-weight:700; color:rgba(232,16,46,0.07);
+    letter-spacing:-10px; white-space:nowrap; pointer-events:none; line-height:1;
+  }
+  .hero-inner { position:relative; z-index:1; max-width:1180px; margin:0 auto; padding:0 40px;
+    display:flex; align-items:center; justify-content:space-between; gap:40px;
+  }
+  .hero-left { flex:1; }
+  .hero-right { flex-shrink:0; text-align:right; }
+  .hero-collab { display:inline-flex; align-items:center; gap:10px;
+    font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+    color:rgba(255,255,255,0.85);
+    background:rgba(247,201,72,0.10); padding:6px 14px; border-radius:100px;
+    border:1px solid var(--gold-border);
+    margin-bottom:18px;
+  }
+  .hero-collab .collab-x { color:var(--gold); font-size:14px; }
+  .hero-label { font-size:11px; font-weight:700; letter-spacing:4px;
+    text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:10px;
+  }
+  .hero h1 { font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(48px,7vw,84px); font-weight:700; line-height:0.95;
+    color:#fff; text-transform:uppercase; letter-spacing:-2.5px;
+  }
+  .hero h1 span { display:block; font-size:clamp(13px,1.5vw,15px); font-weight:500;
+    letter-spacing:2px; margin-top:14px; opacity:0.75; text-transform:uppercase;
+    font-family:'Inter',sans-serif;
+  }
+  .hero-stat-col { display:flex; flex-direction:column; gap:8px; }
+  .hero-stat-item { text-align:right; }
+  .hero-stat-item .hs-num { font-family:'Space Grotesk',sans-serif;
+    font-size:38px; font-weight:700; color:var(--gold); line-height:1;
+  }
+  .hero-stat-item .hs-label { font-size:10px; font-weight:600;
+    letter-spacing:1.5px; text-transform:uppercase;
+    color:rgba(255,255,255,0.5); margin-top:4px;
+  }
+
+  /* CONTAINER */
+  .container { max-width:1180px; margin:0 auto; padding:0 40px; }
+
+  /* TABS — позиціонована ліворуч під hero; стає fixed коли hero уходить з viewport */
+  .tabs-bar {
+    position:absolute; left:20px; top:var(--tabs-top, 240px);
+    display:flex; flex-direction:column; gap:4px;
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:14px; padding:6px;
+    z-index:100; margin:0;
+    box-shadow:0 12px 36px rgba(0,0,0,0.5);
+  }
+  .tabs-bar.stuck { position:fixed; top:24px; }
+  .tab-btn {
+    font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600;
+    letter-spacing:0.5px; padding:10px 20px; border-radius:9px;
+    border:none; cursor:pointer; background:transparent; color:var(--text-muted);
+    transition:all 0.18s;
+    text-align:center; white-space:nowrap;
+    min-width:170px;
+  }
+  .tab-btn:hover { color:var(--text); background:rgba(255,255,255,0.04); }
+  .tab-btn.active { background:var(--gold); color:#FFFFFF; }
+  .tab-content { display:none; padding-top:32px; }
+  .tab-content.active { display:block; }
+
+  /* STAGE (етап в межах шота — послідовно по скролу) */
+  .stage { margin-top:56px; scroll-margin-top:24px; }
+  .stage:first-of-type { margin-top:40px; }
+  .stage-header {
+    display:flex; align-items:center; gap:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:24px;
+  }
+  .stage-num {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:44px; height:32px; padding:0 12px;
+    background:var(--gold); color:#FFFFFF;
+    font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700;
+    border-radius:6px; letter-spacing:0.04em;
+  }
+  .stage-header h3 {
+    margin:0; font-family:'Space Grotesk',sans-serif;
+    font-size:22px; font-weight:700; letter-spacing:-0.01em; color:var(--text);
+  }
+  .stage-note {
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-left:3px solid var(--gold);
+    border-radius:0 12px 12px 0;
+    padding:22px 26px;
+    margin-top:18px;
+  }
+  .stage-card {
+    margin:0 0 32px;
+    border:1px solid var(--border);
+    border-left:3px solid var(--gold);
+    border-radius:0 14px 14px 0;
+    overflow:hidden;
+    background:var(--bg-card);
+  }
+  .stage-card .main-ref { margin:0; border:none; border-radius:0; }
+  .stage-card .stage-note { margin:0; border:none; border-radius:0; background:var(--bg-card); }
+  .stage-card .stage-note + .stage-note { border-top:1px solid var(--border); }
+  .stage-card > .stage-header {
+    margin:0; padding:20px 26px 18px;
+    border-bottom:1px solid var(--border);
+  }
+  .stage-card > .stage-header h3 { font-size:18px; }
+  .stage-note.warn .sn-label { color:#FFB4B4; }
+  .stage-note.wish .sn-label { color:var(--text-muted); }
+  .stage-note.important { background:linear-gradient(180deg, rgba(232,16,46,0.10), var(--bg-card) 60%); }
+  .stage-note.important .sn-label { color:var(--gold); letter-spacing:0.22em; }
+  .link-tab {
+    color:var(--gold); cursor:pointer;
+    font-style:normal; font-weight:600;
+    border-bottom:1px dashed currentColor;
+    transition:color 0.15s, border-bottom-style 0.15s;
+  }
+  .link-tab:hover { color:var(--gold-light); border-bottom-style:solid; }
+  .stage-card .media-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:0;
+    background:#000;
+  }
+  .stage-card .media-item { display:flex; flex-direction:column; min-width:0; }
+  .stage-card .media-item + .media-item { border-left:1px solid var(--border); }
+  .stage-card .media-item video,
+  .stage-card .media-item img {
+    width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#000;
+  }
+  .stage-card .media-cap {
+    padding:12px 18px;
+    font-size:13px; color:var(--text-muted);
+    border-top:1px solid var(--border);
+    background:rgba(0,0,0,0.25);
+    font-family:'Space Grotesk',sans-serif;
+    display:flex; align-items:center; gap:8px;
+  }
+  .stage-card .media-cap b {
+    color:var(--gold); font-weight:700;
+    letter-spacing:0.06em; text-transform:uppercase;
+    margin-right:2px;
+  }
+  @media (max-width:760px) {
+    .stage-card .media-grid { grid-template-columns:1fr; }
+    .stage-card .media-item + .media-item { border-left:none; border-top:1px solid var(--border); }
+  }
+  .stage-note .sn-label {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:11px; letter-spacing:0.22em; text-transform:uppercase;
+    color:var(--gold); font-weight:700; margin-bottom:8px;
+  }
+  .stage-note p {
+    margin:0; color:#E8E8E8; font-size:15px; line-height:1.7;
+  }
+  .stage-note p em { color:var(--gold); font-style:normal; font-weight:600; }
+  .stage-note p strong { color:var(--text); font-weight:600; }
+
+  /* SECTION */
+  .section-block { padding:40px 0 0; }
+  .section-header { display:flex; align-items:center; gap:16px; margin-bottom:8px; }
+  .section-icon { width:44px; height:44px; border-radius:11px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; flex-shrink:0;
+    background:var(--gold-soft); color:var(--gold);
+    border:1px solid var(--gold-border);
+  }
+  .section-title { font-family:'Space Grotesk',sans-serif;
+    font-size:26px; font-weight:700; color:var(--text); letter-spacing:-0.01em;
+  }
+  .section-line { height:1px; background:var(--border); margin:14px 0 18px; }
+  .section-sub { font-size:14px; color:var(--text-muted); margin-bottom:28px; max-width:780px; }
+  .section-sub b { color:var(--gold); font-weight:600; }
+
+  /* REF LEGEND */
+  .refs-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+
+  /* CLIENT FEEDBACK BLOCK */
+  .client-feedback { margin-top:0; }
+  .client-feedback .cf-label {
+    font-family:'Space Grotesk',sans-serif;
+    font-size:26px; letter-spacing:-0.01em; text-transform:none;
+    color:var(--text); font-weight:700; margin-bottom:10px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .client-feedback .cf-label::before {
+    content:''; display:inline-block;
+    width:8px; height:24px; background:var(--gold); border-radius:2px;
+  }
+  .client-feedback .cf-sublabel {
+    font-size:16px; color:var(--text-muted); margin-bottom:30px;
+    max-width:780px; line-height:1.55;
+  }
+
+  .cf-item {
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:28px 32px;
+    margin-bottom:14px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:32px;
+    align-items:start;
+    transition:border-color 0.15s, background 0.15s;
+  }
+  .cf-item:hover { border-color:#3A3A3A; }
+  .cf-item.with-media { grid-template-columns:minmax(280px, 0.9fr) 1.1fr; }
+
+  .cf-item .cf-text { display:flex; flex-direction:column; gap:14px; }
+  .cf-item .cf-num {
+    display:inline-flex; align-items:center; justify-content:center;
+    align-self:flex-start;
+    min-width:42px; height:30px; padding:0 10px;
+    background:var(--gold); color:#FFFFFF;
+    font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:700;
+    border-radius:6px; letter-spacing:0.04em;
+  }
+  .cf-item .cf-body {
+    margin:0; color:#E8E8E8; font-size:15px; line-height:1.7;
+  }
+  .cf-item .cf-body strong { color:var(--text); font-weight:600; }
+  .cf-item .cf-body em {
+    color:var(--gold); font-style:normal; font-weight:600;
+  }
+
+  .cf-media { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .cf-media:has(.cf-media-card:only-child) { grid-template-columns:1fr; }
+  .cf-media-card img.tall { aspect-ratio:auto; max-height:380px; object-fit:contain; background:#000; }
+  .cf-media-card {
+    position:relative;
+    border:1px solid var(--border);
+    border-radius:10px; overflow:hidden;
+  }
+  .cf-media-card img {
+    width:100%; aspect-ratio:16/9; object-fit:cover; display:block;
+  }
+  .cf-media-cap {
+    position:absolute; left:0; right:0; bottom:0;
+    padding:22px 14px 12px; font-size:11px;
+    color:#fff;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,0.78));
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:0.08em; text-transform:uppercase;
+    pointer-events:none;
+  }
+  .cf-media-cap b { color:var(--gold); font-weight:700; margin-right:6px; }
+
+  @media (max-width:900px) {
+    .cf-item, .cf-item.with-media { grid-template-columns:1fr; gap:18px; padding:22px; }
+  }
+  @media (max-width:560px) {
+    .cf-media { grid-template-columns:1fr; }
+  }
+  .ref-card { background:var(--bg-card); border:1px solid var(--border);
+    border-radius:12px; overflow:hidden;
+  }
+  .ref-card.primary { border-color:var(--gold-border);
+    background:linear-gradient(180deg,var(--gold-soft), var(--bg-card) 40%);
+  }
+  .ref-card video, .ref-card img {
+    width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#000;
+  }
+  .ref-card .rc-body { padding:14px 16px 16px; }
+  .ref-card .rc-tag { display:inline-block; font-size:10px;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:6px; font-weight:700;
+  }
+  .ref-card.primary .rc-tag::after { content:' · головний'; opacity:0.7; }
+  .ref-card .rc-title { font-size:15px; font-weight:600; margin:0 0 4px; }
+  .ref-card .rc-desc { color:var(--text-muted); font-size:13px; margin:0; }
+
+  /* HERO REF (main visual) */
+  .main-ref {
+    position:relative;
+    margin:0 0 32px; border-radius:14px; overflow:hidden;
+    background:var(--bg-card); border:1px solid var(--gold-border);
+  }
+  .main-ref-badge {
+    position:absolute; top:20px; left:20px; z-index:2;
+    display:inline-flex; align-items:center; gap:14px;
+    font-family:'Space Grotesk',sans-serif;
+    pointer-events:none;
+    text-shadow:0 2px 10px rgba(0,0,0,0.75);
+  }
+  .main-ref-badge b {
+    background:var(--gold); color:#FFFFFF;
+    padding:6px 11px; border-radius:6px;
+    font-size:13px; font-weight:700;
+    letter-spacing:0.04em;
+    text-shadow:none;
+    box-shadow:0 4px 14px rgba(0,0,0,0.4);
+  }
+  .main-ref-badge span {
+    color:#FFFFFF;
+    font-size:20px; font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .main-ref video, .main-ref img { width:100%; display:block;
+    max-height:520px; object-fit:cover; background:#000;
+  }
+  .main-ref .mr-cap { padding:14px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; font-size:13px; color:var(--text-muted);
+    border-top:1px solid var(--border); background:rgba(0,0,0,0.25);
+  }
+  .main-ref .mr-cap b { color:var(--gold); font-weight:700; letter-spacing:0.04em; }
+
+  /* SHOTS ROW (preview shots affected) */
+  .shots-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:0 0 36px; }
+  .shot-mini { background:var(--bg-card); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden;
+  }
+  .shot-mini video { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#000; }
+  .shot-mini .sm-label { padding:10px 12px;
+    font-family:'Space Grotesk',sans-serif; font-size:11px;
+    letter-spacing:0.18em; text-transform:uppercase; color:var(--gold);
+    font-weight:700;
+  }
+
+  /* TASK CARD */
+  .task-card { background:var(--bg-card); border:1px solid var(--border);
+    border-radius:12px; display:grid; grid-template-columns:240px 1fr; gap:0;
+    margin-bottom:12px; overflow:hidden; transition:background 0.15s, border-color 0.15s;
+  }
+  .task-card:hover { background:var(--bg-card-hover); border-color:#3A3A3A; }
+  .task-media { width:240px; min-height:100%; background:#000;
+    border-right:1px solid var(--border); position:relative;
+  }
+  .task-media video, .task-media img {
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .task-media .tm-cap {
+    position:absolute; bottom:0; left:0; right:0;
+    padding:8px 12px; font-size:10px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--gold); font-weight:700;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,0.7));
+  }
+  .task-body { padding:20px 24px; }
+  .task-title { font-family:'Space Grotesk',sans-serif;
+    font-size:18px; font-weight:700; margin-bottom:12px; line-height:1.25;
+  }
+  .task-meta { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .tag { font-size:10px; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.8px; padding:4px 10px; border-radius:4px;
+  }
+  .tag-keep { color:var(--tag-keep); background:var(--tag-keep-bg); }
+  .tag-fix  { color:var(--tag-fix);  background:var(--tag-fix-bg); }
+  .tag-add  { color:var(--tag-add);  background:var(--tag-add-bg); }
+
+  .sub-block { margin-bottom:14px; }
+  .sub-block:last-child { margin-bottom:0; }
+  .sub-label { font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:1px; color:var(--gold); margin-bottom:6px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .sub-label .sub-badge { font-size:10px; font-weight:600;
+    color:var(--text-muted); background:rgba(255,255,255,0.06);
+    padding:2px 8px; border-radius:3px; letter-spacing:0.5px;
+  }
+
+  .task-bullets { list-style:none; padding:0; margin:0; }
+  .task-bullets li { font-size:13.5px; color:#E0E0E0;
+    line-height:1.65; padding-left:16px; position:relative;
+  }
+  .task-bullets li::before { content:''; position:absolute; left:0; top:9px;
+    width:5px; height:5px; border-radius:50%; background:var(--gold);
+  }
+  .task-bullets li strong { color:var(--text); font-weight:600; }
+  .task-note { font-size:12.5px; color:var(--text-muted);
+    border-left:2px solid var(--gold); padding-left:12px;
+    margin-top:10px; line-height:1.55;
+  }
+  .task-problem { font-size:13px; color:var(--tag-fix); margin-bottom:8px; font-weight:500; }
+
+  /* GOLD STRIP */
+  .gold-strip { height:3px; background:var(--gold); margin:48px 0; border-radius:2px; opacity:0.7; }
+
+  /* PLACEHOLDER (для шотів без правок) */
+  .placeholder { background:var(--bg-card); border:1px dashed var(--border);
+    border-radius:14px; padding:48px; text-align:center; color:var(--text-muted);
+  }
+  .placeholder .ph-title { font-family:'Space Grotesk',sans-serif;
+    font-size:18px; font-weight:600; color:var(--text); margin-bottom:8px;
+  }
+  .placeholder .ph-desc { font-size:13px; max-width:480px; margin:0 auto; }
+
+  .shot-hero { margin:0 0 24px; border-radius:14px; overflow:hidden;
+    background:var(--bg-card); border:1px solid var(--border);
+  }
+  .shot-hero video { width:100%; display:block; max-height:520px; object-fit:cover; background:#000; }
+  .shot-hero .sh-cap { padding:14px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:12px; color:var(--text-muted);
+    border-top:1px solid var(--border); background:rgba(0,0,0,0.25);
+  }
+  .shot-hero .sh-cap b { color:var(--gold); font-family:'Space Grotesk',sans-serif;
+    letter-spacing:0.18em; text-transform:uppercase;
+  }
+
+  /* SUMMARY */
+  .summary { margin-top:48px;
+    background:linear-gradient(180deg, rgba(247,201,72,0.06), var(--bg-card));
+    border:1px solid var(--gold-border); border-radius:14px; padding:32px;
+  }
+  .summary h3 { font-family:'Space Grotesk',sans-serif;
+    font-size:18px; margin-bottom:18px; color:var(--gold);
+    text-transform:uppercase; letter-spacing:0.2em;
+  }
+  .summary ol { margin:0; padding-left:22px; }
+  .summary ol li { margin:8px 0; color:#E8E8E8; }
+  .summary ol li b { color:var(--gold); font-weight:600; }
+
+  /* FOOTER */
+  .footer { background:#0A0A0A; padding:36px 40px; text-align:center;
+    margin-top:80px; border-top:1px solid var(--border);
+  }
+  .footer p { font-size:12px; color:var(--text-muted); letter-spacing:1px; }
+  .footer-collab { font-size:11px; margin-top:6px; color:var(--text-dim);
+    letter-spacing:2px; text-transform:uppercase;
+  }
+
+  @media (max-width:900px) {
+    .hero-inner { flex-direction:column; align-items:flex-start; padding:0 20px; }
+    .hero-right { text-align:left; }
+    .hero-stat-col { flex-direction:row; gap:24px; }
+    .hero-stat-item { text-align:left; }
+    .hero::after { display:none; }
+    .container { padding:0 20px; }
+    .refs-grid { grid-template-columns:1fr; }
+    .shots-row { grid-template-columns:1fr 1fr; }
+    .task-card { grid-template-columns:1fr; }
+    .task-media { width:100%; height:200px; border-right:none; border-bottom:1px solid var(--border); }
+    .tabs-bar {
+      position:static; transform:none;
+      flex-direction:row; flex-wrap:wrap;
+      margin:24px auto 0; width:fit-content;
+      box-shadow:none;
+    }
+    .tab-btn { flex:1; min-width:auto; padding:10px 12px; font-size:12px; }
+  }
+  @media (max-width:560px) { .shots-row { grid-template-columns:1fr; } }
+
+  /* LIGHTBOX */
+  .container img, .container video,
+  .main-ref img, .main-ref video,
+  .shot-hero video { cursor: zoom-in; }
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(6,8,15,0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 1000;
+    cursor: zoom-out;
+    padding: 32px;
+    animation: lb-fade 0.18s ease-out;
+  }
+  .lightbox.active { display: flex; }
+  @keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+  .lightbox .lb-content {
+    max-width: 96vw; max-height: 92vh;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 30px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(247,201,72,0.18);
+    background: #000;
+  }
+  .lightbox .lb-close {
+    position: absolute; top: 24px; right: 24px;
+    width: 46px; height: 46px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 26px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+    user-select: none;
+  }
+  /* SHOT NAV — кнопка "Далі" в кінці кожної секції */
+  .shot-nav {
+    margin-top:48px; padding-top:32px;
+    border-top:1px solid var(--border);
+    display:flex; justify-content:flex-end;
+  }
+  .next-btn {
+    display:inline-flex; align-items:center; gap:14px;
+    font-family:'Space Grotesk',sans-serif;
+    color:#fff; background:var(--gold);
+    padding:18px 28px; border:none; border-radius:14px;
+    cursor:pointer;
+    transition:background 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow:0 8px 24px rgba(232,16,46,0.28);
+  }
+  .next-btn:hover {
+    background:var(--gold-light);
+    transform:translateX(4px);
+    box-shadow:0 12px 32px rgba(232,16,46,0.4);
+  }
+  .next-btn .nb-label {
+    font-size:11px; font-weight:600; letter-spacing:2.5px;
+    text-transform:uppercase; opacity:0.75;
+  }
+  .next-btn .nb-target {
+    font-size:16px; font-weight:700; letter-spacing:1px;
+  }
+  .next-btn .nb-arrow {
+    font-size:22px; line-height:1; margin-left:6px;
+    transition:transform 0.2s;
+  }
+  .next-btn:hover .nb-arrow { transform:translateX(4px); }
+  .next-btn.cycle {
+    background:transparent; color:var(--gold);
+    border:1px solid var(--gold-border);
+    box-shadow:none;
+  }
+  .next-btn.cycle:hover {
+    background:var(--gold-soft);
+    transform:translateX(-4px);
+    box-shadow:0 8px 24px rgba(232,16,46,0.18);
+  }
+  .next-btn.cycle:hover .nb-arrow { transform:none; }
+  @media (max-width:640px) {
+    .shot-nav { justify-content:center; padding-top:24px; margin-top:32px; }
+    .next-btn { padding:14px 22px; gap:10px; }
+    .next-btn .nb-target { font-size:14px; }
+  }
+
+  .lightbox .lb-close:hover {
+    background: rgba(247,201,72,0.16);
+    border-color: var(--gold-border);
+    color: var(--gold);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <h1>Mr.Grill<span>пост-продакшн</span></h1>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="switchTab('overview')">Космос — загально</button>
+    <button class="tab-btn" onclick="switchTab('sh001')">SH_001</button>
+    <button class="tab-btn" onclick="switchTab('sh002')">SH_002</button>
+    <button class="tab-btn" onclick="switchTab('sh012')">SH_012</button>
+    <button class="tab-btn" onclick="switchTab('sh013')">SH_013</button>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- TAB: КОСМОС ЗАГАЛЬНО -->
+  <!-- ======================================================== -->
+  <div id="tab-overview" class="tab-content active">
+
+    <!-- Загальний вигляд космосу -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-icon">&#10070;</div>
+        <div class="section-title">Загальний вигляд космосу</div>
+      </div>
+      <div class="section-line"></div>
+      <div class="section-sub">Стосується <b>SH_001 · SH_002 · SH_012 · SH_013</b>. Беремо <b>Реф 2</b> за основу композиції, освітлення й настрою. Усі правки нижче спрямовані на те, щоб привести ці шоти ближче до головного рефа.</div>
+
+      <!-- Головний реф -->
+      <div class="main-ref">
+        <video src="refs/ref_2.mp4" muted loop autoplay playsinline></video>
+        <div class="mr-cap">
+          <span><b>Реф 2</b> — головний опорний візуал</span>
+          <span>композиція · світло · кольори · газові хмари</span>
+        </div>
+      </div>
+
+      <!-- Коментар клієнта (як було сказано) -->
+      <div class="client-feedback">
+        <div class="cf-label">Коментар клієнта</div>
+        <div class="cf-sublabel">Прямий текст, як був отриманий — про загальний вигляд космосу.</div>
+
+        <div class="cf-item with-media">
+          <div class="cf-text">
+            <span class="cf-num">01</span>
+            <p class="cf-body">Просимо додати крупніші та дрібніші скупчення зірок, окремі небесні тіла та мерехтіння, яке створюватиме ілюзію руху й життя в космосі. <em>Реф 2 прошу вважати опорним.</em></p>
+          </div>
+          <div class="cf-media">
+            <div class="cf-media-card">
+              <img src="refs/comments/p1_a.jpg" alt="Референс мерехтінь і скупчень зірок">
+              <div class="cf-media-cap"><b>01</b> Референс мерехтінь і скупчень зірок</div>
+            </div>
+            <div class="cf-media-card">
+              <img src="refs/comments/p1_b.jpg" alt="Приблизне місце розташування додаткових елементів">
+              <div class="cf-media-cap"><b>02</b> Приблизне місце розташування додаткових елементів</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cf-item with-media">
+          <div class="cf-text">
+            <span class="cf-num">02</span>
+            <p class="cf-body">Просимо звернути увагу на точку підсвіту Землі в <em>реф 2</em> — наразі вона виглядає «мертвою». Потрібно додати дію: прискорення / сповільнення світла, пульсацію або іншу динаміку. В одному з попередніх варіантів це вже було реалізовано вдало.</p>
+          </div>
+          <div class="cf-media">
+            <div class="cf-media-card">
+              <img src="refs/comments/p2_a.png" alt="Точка підсвіту Землі — обведена">
+              <div class="cf-media-cap"><b>Точка</b> підсвіту Землі</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cf-item with-media">
+          <div class="cf-text">
+            <span class="cf-num">03</span>
+            <p class="cf-body">Щодо кілець — їхня кількість зараз надмірна. Зверніть увагу на <em>реф 3 (генерація AI)</em> — прошу вважати візуал по кільцях опорним. Також не потрібно вибірково підсвічувати кільця золотом.</p>
+          </div>
+          <div class="cf-media">
+            <div class="cf-media-card">
+              <img src="refs/ref_3.jpg" alt="Реф 3 — кільця (AI)">
+              <div class="cf-media-cap"><b>Реф 3</b> опорний по кільцях</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cf-item">
+          <div class="cf-text">
+            <span class="cf-num">04</span>
+            <p class="cf-body">Жовте сяйво залишаємо як основу. Жовте сяйво в центрі композиційних елементів космосу максимально відповідає нашому попередньому рефу, тому його просимо зберегти. Так само залишити газові хмари навколо нього.</p>
+          </div>
+        </div>
+
+        <div class="cf-item">
+          <div class="cf-text">
+            <span class="cf-num">05</span>
+            <p class="cf-body">Ілюзія глибини зараз добре створена за рахунок крупності небесних тіл, але хотілося б додати динаміку блиску: збільшення / зменшення інтенсивності світіння. Можливо, рух земної кулі…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shot-nav">
+      <button class="next-btn" onclick="switchTab('sh001')">
+        <span class="nb-label">Далі</span>
+        <span class="nb-target">SH_001</span>
+        <span class="nb-arrow">&rarr;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- TAB: SH_001 -->
+  <!-- ======================================================== -->
+  <div id="tab-sh001" class="tab-content">
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-icon">&#9673;</div>
+        <div class="section-title">SH_001</div>
+      </div>
+      <div class="section-line"></div>
+      <div class="section-sub">Поточний preview зверху. Нижче — 4 етапи шота, один за одним за скролом.</div>
+
+      <div class="shot-hero">
+        <video src="refs/shots/SH_001.mov" muted loop autoplay playsinline></video>
+        <div class="sh-cap"><b>SH_001 · поточний preview</b><span>джерело: preview/SH_001_preview.mov</span></div>
+      </div>
+
+      <!-- ETAPI -->
+      <div class="stage" id="sh001-start">
+        <div class="stage-header">
+          <span class="stage-num">01</span>
+          <h3>Початок · лого</h3>
+        </div>
+
+        <div class="stage-card">
+          <div class="main-ref">
+            <img src="refs/shots/sh001_start_logo.png" alt="Поточний кадр — поява лого Mr.Grill у космосі">
+            <div class="mr-cap">
+              <span><b>Поточний кадр</b> · поява лого</span>
+              <span>space_logo_v4_01_OK</span>
+            </div>
+          </div>
+          <div class="stage-note">
+            <div class="sn-label">Коментар по етапу</div>
+            <p>Загалом виглядає <em>ок</em>. По фіналу треба <strong>відрендерити</strong> в потрібній якості. Космос на цьому етапі <strong>не міняємо</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" id="sh001-trans-space">
+        <div class="stage-header">
+          <span class="stage-num">02</span>
+          <h3>Транзішн у космос з продуктами</h3>
+        </div>
+
+        <div class="stage-card">
+          <div class="media-grid">
+            <div class="media-item">
+              <video src="refs/shots/sh001_trans_space_ref1.mp4" muted loop autoplay playsinline></video>
+              <div class="media-cap"><b>Реф 1</b> Сцена 1-2 · прискорення від лого до кольорової галактики</div>
+            </div>
+            <div class="media-item">
+              <video src="refs/shots/sh001_trans_space_ref2.mp4" muted loop autoplay playsinline></video>
+              <div class="media-cap"><b>Реф 2</b> Сцена 2 і 3 · ефект прискорення</div>
+            </div>
+          </div>
+          <div class="stage-note">
+            <div class="sn-label">Коментар по етапу</div>
+            <p><strong>Ідеальний варіант прольоту до наступної частини.</strong> Обидва рефи — опорні; використати їх як орієнтир для динаміки та відчуття прискорення.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" id="sh001-space">
+        <div class="stage-header">
+          <span class="stage-num">03</span>
+          <h3>Космос з продуктами</h3>
+        </div>
+
+        <div class="stage-card">
+          <div class="main-ref">
+            <img src="refs/ref_3.jpg" alt="Реф 3 — опорний візуал космосу з продуктами">
+            <div class="mr-cap">
+              <span><b>Реф 3</b> · опорний візуал</span>
+              <span>стиль космосу + кільця</span>
+            </div>
+          </div>
+          <div class="stage-note">
+            <div class="sn-label">Коментар по етапу</div>
+            <p><strong>Головна поправочка:</strong> зберігаємо космос у тому самому стилі, що був прописаний у розділі <span class="link-tab" onclick="switchTab('overview')">«Космос — загально»</span>. <strong>Транзішн по кольорах</strong> підганяємо під нього.</p>
+          </div>
+          <div class="stage-note warn">
+            <div class="sn-label">Додатково</div>
+            <p><strong>Лого у верхньому лівому куті — НЕ додаємо.</strong> Воно не потрібне.</p>
+          </div>
+          <div class="stage-note wish">
+            <div class="sn-label">Побажання · мінор</div>
+            <p>Додати ефект <em>розтягування продукту</em> після транзішну, щоб виглядало космічно.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" id="sh001-trans-earth">
+        <div class="stage-header">
+          <span class="stage-num">04</span>
+          <h3>Транзішн на землю</h3>
+        </div>
+
+        <div class="stage-card">
+          <div class="media-grid">
+            <div class="media-item">
+              <video src="refs/shots/sh001_trans_earth_ref1.mp4" muted loop autoplay playsinline></video>
+              <div class="media-cap"><b>Реф 1</b> Сцена 3-4 · перехід від стратосфери до землі</div>
+            </div>
+            <div class="media-item">
+              <img src="refs/shots/sh001_trans_earth_ref2.gif" alt="Сцена 4-5 — прилетіли з космосу на землю">
+              <div class="media-cap"><b>Реф 2</b> Сцена 4-5 · прилетіли з космосу на землю</div>
+            </div>
+          </div>
+          <div class="stage-note">
+            <div class="sn-label">Коментар по етапу</div>
+            <p><strong>Ефект швидкого переходу до землі.</strong> <em>Реф 2</em> — варіант перебивки через хмаринки для більш плавного транзішну.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shot-nav">
+      <button class="next-btn" onclick="switchTab('sh002')">
+        <span class="nb-label">Далі</span>
+        <span class="nb-target">SH_002</span>
+        <span class="nb-arrow">&rarr;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- TAB: SH_002 -->
+  <!-- ======================================================== -->
+  <div id="tab-sh002" class="tab-content">
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-icon">&#9673;</div>
+        <div class="section-title">SH_002</div>
+      </div>
+      <div class="section-line"></div>
+      <div class="section-sub">Поточний preview зверху. Нижче — специфічні правки по шоту.</div>
+
+      <div class="shot-hero">
+        <video src="refs/shots/SH_002.mov" muted loop autoplay playsinline></video>
+        <div class="sh-cap"><b>SH_002 · поточний preview</b><span>джерело: preview/SH_002_preview.mov</span></div>
+      </div>
+
+      <div class="stage-header">
+        <span class="stage-num">01</span>
+        <h3>Локація · заправка</h3>
+      </div>
+
+      <div class="stage-card">
+        <div class="main-ref">
+          <img src="refs/shots/sh002_ref.png" alt="Кадр з зйомки на заправці — герой у червоному">
+          <div class="mr-cap">
+            <span><b>Кадр зйомки</b> · герой на заправці</span>
+            <span>REC TC: 01:00:24:06</span>
+          </div>
+        </div>
+        <div class="stage-note">
+          <div class="sn-label">Коментар по шоту</div>
+          <p>Тут ми робимо <strong>ту ж заправку</strong>. Це шот <em>плавного переходу</em> з SH_001 — вони, напевно, будуть <strong>об'єднані</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="shot-nav">
+      <button class="next-btn" onclick="switchTab('sh012')">
+        <span class="nb-label">Далі</span>
+        <span class="nb-target">SH_012</span>
+        <span class="nb-arrow">&rarr;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- TAB: SH_012 -->
+  <!-- ======================================================== -->
+  <div id="tab-sh012" class="tab-content">
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-icon">&#9673;</div>
+        <div class="section-title">SH_012</div>
+      </div>
+      <div class="section-line"></div>
+      <div class="section-sub">Поточний preview зверху. Нижче — опорний реф і коментар клієнта.</div>
+
+      <div class="shot-hero">
+        <video src="refs/shots/SH_012.mov" muted loop autoplay playsinline></video>
+        <div class="sh-cap"><b>SH_012 · поточний preview</b><span>джерело: preview/SH_012_preview.mov</span></div>
+      </div>
+
+      <div class="stage-header">
+        <span class="stage-num">01</span>
+        <h3>Головний реф</h3>
+      </div>
+
+      <div class="stage-card">
+        <div class="main-ref">
+          <video src="refs/shots/sh012_ref1.mp4" muted loop autoplay playsinline></video>
+          <div class="mr-cap">
+            <span><b>Реф</b> · сцена 15 · перехід від землі до космосу</span>
+            <span>вайб заповнення космосу з героєм</span>
+          </div>
+        </div>
+        <div class="stage-note important">
+          <div class="sn-label">&#9888; Важливо!</div>
+          <p>Космос у цьому шоті має бути <strong>схожим на наш основний</strong> (див. розділ <span class="link-tab" onclick="switchTab('overview')">«Космос — загально»</span>).</p>
+        </div>
+        <div class="stage-note">
+          <div class="sn-label">Коментар по шоту</div>
+          <p><strong>Ідеально</strong>, якщо вийде зробити такий же <em>вайб заповнення космосу з героєм</em>.</p>
+        </div>
+        <div class="stage-note warn">
+          <div class="sn-label">Додатково</div>
+          <p>Ефект <strong>розтроєння</strong> з рефу — <strong>НЕ беремо</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="shot-nav">
+      <button class="next-btn" onclick="switchTab('sh013')">
+        <span class="nb-label">Далі</span>
+        <span class="nb-target">SH_013</span>
+        <span class="nb-arrow">&rarr;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- TAB: SH_013 -->
+  <!-- ======================================================== -->
+  <div id="tab-sh013" class="tab-content">
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-icon">&#9673;</div>
+        <div class="section-title">SH_013</div>
+      </div>
+      <div class="section-line"></div>
+      <div class="section-sub">Поточний preview зверху. Нижче — 3 етапи: композиція, рух камери та бажаний вайб.</div>
+
+      <div class="shot-hero">
+        <video src="refs/shots/SH_013.mov" muted loop autoplay playsinline></video>
+        <div class="sh-cap"><b>SH_013 · поточний preview</b><span>джерело: preview/SH_013_preview.mov</span></div>
+      </div>
+
+      <div class="stage" id="sh013-comp">
+        <div class="stage-header">
+          <span class="stage-num">01</span>
+          <h3>Головний реф по композиції</h3>
+        </div>
+
+        <div class="stage-card">
+          <div class="main-ref">
+            <img src="refs/shots/sh013_comp_ref.jpg" alt="Композиційний реф SH_013 — персонаж і об'єкти їжі в космосі">
+            <div class="mr-cap">
+              <span><b>Реф по композиції</b> · герой у центрі, об'єкти їжі навколо</span>
+              <span>лого Mr.Grill — лівий верхній кут</span>
+            </div>
+          </div>
+          <div class="stage-note important">
+            <div class="sn-label">&#9888; Важливо!</div>
+            <p>Космос лишаємо <strong>як наш основний</strong> (див. розділ <span class="link-tab" onclick="switchTab('overview')">«Космос — загально»</span>).</p>
+          </div>
+          <div class="stage-note">
+            <div class="sn-label">Коментар по композиції</div>
+            <p>Навколо персонажа існують у космосі <em>об'єкти їжі</em>. У <strong>лівому верхньому куті</strong> — лого <strong>Mr.Grill</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" id="sh013-camera">
+        <div class="stage-header">
+          <span class="stage-num">02</span>
+          <h3>Рух камери</h3>
+        </div>
+
+        <div class="stage-card">
+          <div class="main-ref">
+            <video src="refs/ref_1.mp4" muted loop autoplay playsinline></video>
+            <div class="mr-cap">
+              <span><b>Реф 1</b> · варіант руху камери</span>
+              <span>подобається клієнту</span>
+            </div>
+          </div>
+          <div class="stage-note">
+            <div class="sn-label">Коментар по етапу</div>
+            <p>Це варіант, який <strong>подобається клієнту</strong>, але який <em>монтажно навряд ляже</em> для пекшоту.</p>
+          </div>
+          <div class="stage-note warn">
+            <div class="sn-label">Додатково</div>
+            <p>У цю сцену точно треба буде додати <strong>dolly out</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage" id="sh013-vibe">
+        <div class="stage-header">
+          <span class="stage-num">03</span>
+          <h3>Вайб, якого хотілось би<span style="color:var(--gold)">*</span></h3>
+        </div>
+
+        <div class="stage-card">
+          <div class="main-ref">
+            <video src="refs/shots/sh013_vibe_ref.mp4" muted loop autoplay playsinline></video>
+            <div class="mr-cap">
+              <span><b>Реф</b> · сцена 16 — пекшот · інтеграція людини в космосі</span>
+              <span>затверджений по вайбу</span>
+            </div>
+          </div>
+          <div class="stage-note">
+            <div class="sn-label">Коментар по етапу</div>
+            <p>Основний <strong>першопочатковий реф</strong>, який затверджували по вайбу. Тут класні <em>волюми</em> по передньому плану, <em>багатошаровість космосу</em> і непогано відтворена <em>фокусна відстань</em>, яка метчиться класно.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shot-nav">
+      <button class="next-btn cycle" onclick="switchTab('overview')">
+        <span class="nb-label">До початку</span>
+        <span class="nb-target">Космос — загально</span>
+        <span class="nb-arrow">&#8634;</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><strong style="color:var(--gold);font-family:'Space Grotesk',sans-serif;letter-spacing:0.18em;text-transform:uppercase;">Space</strong> &middot; Mr.Grill &middot; пост-продакшн тритмент</p>
+  <p class="footer-collab">2026-05-10</p>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" id="lb-close" aria-label="Закрити">&times;</button>
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const content = document.getElementById('tab-' + id);
+  if (content) content.classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const oc = btn.getAttribute('onclick') || '';
+    if (oc.indexOf("'" + id + "'") !== -1) btn.classList.add('active');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchSubTab(event, id, parentScope) {
+  const parent = document.getElementById('tab-' + parentScope);
+  if (!parent) return;
+  parent.querySelectorAll('.subtab-content').forEach(el => el.classList.remove('active'));
+  parent.querySelectorAll('.subtab-btn').forEach(el => el.classList.remove('active'));
+  const content = document.getElementById('tab-' + id);
+  if (content) content.classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* STICKY TABS — без стрибка: позиція absolute узгоджена з висотою hero + 24px,
+   тож при перемиканні на fixed точка лишається тією самою. */
+(function() {
+  const hero = document.querySelector('.hero');
+  const tabsBar = document.querySelector('.tabs-bar');
+  if (!hero || !tabsBar) return;
+
+  function syncTop() {
+    const h = hero.offsetHeight;
+    document.documentElement.style.setProperty('--tabs-top', (h + 24) + 'px');
+  }
+  syncTop();
+  window.addEventListener('resize', syncTop);
+  // після завантаження шрифтів/зображень висота hero може змінитись
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncTop);
+  window.addEventListener('load', syncTop);
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      // Перемикаємо коли hero повністю прокручений вгору
+      const stuck = entry.boundingClientRect.bottom <= 24;
+      tabsBar.classList.toggle('stuck', stuck);
+    }, { threshold: 0, rootMargin: '-24px 0px 0px 0px' }).observe(hero);
+  }
+})();
+
+/* LIGHTBOX */
+(function() {
+  const lb = document.getElementById('lightbox');
+  const closeBtn = document.getElementById('lb-close');
+
+  function openLB(el) {
+    // Прибрати попередній клон (лишити кнопку закриття)
+    Array.from(lb.children).forEach(child => {
+      if (child !== closeBtn) lb.removeChild(child);
+    });
+    let clone;
+    if (el.tagName === 'IMG') {
+      clone = document.createElement('img');
+      clone.src = el.src;
+      clone.alt = el.alt || '';
+    } else if (el.tagName === 'VIDEO') {
+      clone = document.createElement('video');
+      clone.src = el.currentSrc || el.src;
+      clone.muted = true;
+      clone.loop = true;
+      clone.autoplay = true;
+      clone.playsInline = true;
+      clone.setAttribute('playsinline', '');
+    }
+    if (!clone) return;
+    clone.className = 'lb-content';
+    lb.insertBefore(clone, closeBtn);
+    lb.classList.add('active');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLB() {
+    lb.classList.remove('active');
+    lb.setAttribute('aria-hidden', 'true');
+    const v = lb.querySelector('video.lb-content');
+    if (v) { try { v.pause(); } catch(e){} v.removeAttribute('src'); v.load && v.load(); }
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.container img, .container video').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLB(el);
+    });
+  });
+
+  lb.addEventListener('click', closeLB);
+  closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeLB(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lb.classList.contains('active')) closeLB();
+  });
+})();
+</script>
+</body>
+</html>
